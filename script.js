@@ -106,7 +106,7 @@ for (let year in tripsByYear) {
   tripsByYear[year].forEach(function(trip) {
     tripList.innerHTML += `
       <div class="trip-card">
-        <h3>${trip.city}, ${trip.country}</h3>
+        <h3>${trip.country}: ${trip.city}</h3>
         <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
         <p><strong>Purpose:</strong> ${trip.purpose}</p>
         <p><strong>Rating:</strong> ${renderStars(trip.rating)}</p>
