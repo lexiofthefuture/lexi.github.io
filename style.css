@@ -17,6 +17,22 @@ h1 {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.year-row {
+  display: flex;          /* Horizontal layout */
+  gap: 20px;              /* Space between cards */
+  flex-wrap: wrap;        /* Wrap if too many cards */
+  margin-top: 10px;
+}
+
+.trip-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  min-width: 200px;       /* So cards don’t shrink too much */
+  flex: 1;                /* Cards share space equally if row not full */
+}
+
 h2 {
   margin-top: 40px;
   color: #34495e;
