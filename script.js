@@ -1,6 +1,6 @@
-//alert("script.js is connected");
+// alert("script.js is connected");
 
-//Trips
+// Trips
 const trips = [
   {
     country: "Tanzania",
@@ -10,7 +10,7 @@ const trips = [
     purpose: "Vacation",
     rating: 5
   },
-    {
+  {
     country: "Ireland",
     city: "Dublin, Galway, Cork",
     month: "February",
@@ -18,7 +18,7 @@ const trips = [
     purpose: "Vacation",
     rating: 5
   },
-    {
+  {
     country: "Kenya",
     city: "*",
     month: "December",
@@ -34,7 +34,7 @@ const trips = [
     purpose: "Vacation",
     rating: 4
   },
-   {
+  {
     country: "Luxembourg",
     city: "Luxembourg",
     month: "October",
@@ -61,34 +61,21 @@ function renderStars(rating) {
   return stars;
 }
 
-// Sort Trips
+// Month mapping
 const monthNumbers = {
-  "January": 1,
-  "February": 2,
-  "March": 3,
-  "April": 4,
-  "May": 5,
-  "June": 6,
-  "July": 7,
-  "August": 8,
-  "September": 9,
-  "October": 10,
-  "November": 11,
-  "December": 12
+  "January": 1, "February": 2, "March": 3, "April": 4,
+  "May": 5, "June": 6, "July": 7, "August": 8,
+  "September": 9, "October": 10, "November": 11, "December": 12
 };
 
+// Sort trips by year then month
 trips.sort(function(a, b) {
-  // Compare by year first
-  if (b.year !== a.year) {
-    return b.year - a.year; // newest year first
-  }
-  // If same year, compare month
-  return monthNumbers[b.month] - monthNumbers[a.month]; // newest month first
+  if (b.year !== a.year) return b.year - a.year;
+  return monthNumbers[b.month] - monthNumbers[a.month];
 });
 
 // Group trips by year
 const tripsByYear = {};
-
 trips.forEach(function(trip) {
   if (!tripsByYear[trip.year]) {
     tripsByYear[trip.year] = [];
@@ -96,7 +83,7 @@ trips.forEach(function(trip) {
   tripsByYear[trip.year].push(trip);
 });
 
-//Show Trips
+// Show trips
 const tripList = document.getElementById("trip-list");
 tripList.innerHTML = "";
 
@@ -119,8 +106,7 @@ for (let year in tripsByYear) {
         <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
         <p><strong>Purpose:</strong> ${trip.purpose}</p>
         <p><strong>Rating:</strong> <span class="stars">${renderStars(trip.rating)}</span></p>
-
-
-
-
-
+      </div>
+    `;
+  }); // close inner forEach
+} // close outer for loop
