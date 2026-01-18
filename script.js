@@ -1,5 +1,6 @@
 //alert("script.js is connected");
 
+//Trips
 const trips = [
   {
     country: "Tanzania",
@@ -35,6 +36,7 @@ const trips = [
   }
 ];
 
+// Stars
 function renderStars(rating) {
   let stars = "";
   for (let i = 0; i < rating; i++) {
@@ -43,6 +45,32 @@ function renderStars(rating) {
   return stars;
 }
 
+// Sort Trips
+const monthNumbers = {
+  "January": 1,
+  "February": 2,
+  "March": 3,
+  "April": 4,
+  "May": 5,
+  "June": 6,
+  "July": 7,
+  "August": 8,
+  "September": 9,
+  "October": 10,
+  "November": 11,
+  "December": 12
+};
+
+trips.sort(function(a, b) {
+  // Compare by year first
+  if (b.year !== a.year) {
+    return b.year - a.year; // newest year first
+  }
+  // If same year, compare month
+  return monthNumbers[b.month] - monthNumbers[a.month]; // newest month first
+});
+
+//Show Trips
 const tripList = document.getElementById("trip-list");
 
 tripList.innerHTML = "";
@@ -57,4 +85,3 @@ trips.forEach(function (trip) {
     </div>
   `;
 });
-
