@@ -1,0 +1,38 @@
+index.html
+style.css
+script.js
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Travel Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>🌍 My Travel Tracker</h1>
+  <p>This is my first website.</p>
+
+  <button id="testButton">Click me</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 40px;
+  background-color: #f5f5f5;
+}
+
+h1 {
+  color: #2c3e50;
+}
+
+const button = document.getElementById("testButton");
+
+button.addEventListener("click", function () {
+  alert("JavaScript is working!");
+});
+
