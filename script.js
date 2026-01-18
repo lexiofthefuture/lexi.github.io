@@ -1,5 +1,18 @@
-const button = document.getElementById("testButton");
+const trip = {
+  country: "Tanzania",
+  city: "Zanzibar",
+  year: 2025,
+  purpose: "Vacation",
+  liked: true
+};
 
-button.addEventListener("click", function () {
-  alert("JavaScript is working!");
-});
+const tripList = document.getElementById("trip-list");
+
+tripList.innerHTML = `
+  <div class="trip-card">
+    <h2>${trip.city}, ${trip.country}</h2>
+    <p><strong>Year:</strong> ${trip.year}</p>
+    <p><strong>Purpose:</strong> ${trip.purpose}</p>
+    <p><strong>Liked it:</strong> ${trip.liked ? "❤️ Yes" : "😐 Not really"}</p>
+  </div>
+`;
