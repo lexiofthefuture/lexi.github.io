@@ -110,3 +110,35 @@ for (let year in tripsByYear) {
     `;
   }); // close inner forEach
 } // close outer for loop
+
+// Initialize Leaflet map
+const map = L.map('map').setView([20, 0], 2); // center: somewhere in the world
+
+// Add a tile layer (the map visuals)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Example coordinates for your trips
+const countryCoords = {
+  "Tanzania": [-6.3690, 34.8888],
+  "Ireland": [53.1424, -7.6921],
+  "Kenya": [-1.2921, 36.8219],
+  "Italy": [41.8719, 12.5674],
+  "Luxembourg": [49.8153, 6.1296],
+  "Spain": [40.4637, -3.7492]
+};
+
+// Add markers
+trips.forEach(trip => {
+  const coords = countryCoords[trip.country];
+  if (coords) {
+    L.circleMarker(coords, {
+      radius: 8,
+      color: 'red',
+      fillColor: 'red',
+      fillOpacity: 0.7
+    }).addTo(map)
+    .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>Rating: ${renderStars(trip.rating)}`);
+  }
+});
