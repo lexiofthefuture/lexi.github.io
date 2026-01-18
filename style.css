@@ -8,15 +8,6 @@ h1 {
   color: #2c3e50;
 }
 
-.trip-card {
-  background: white;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
 .year-row {
   display: flex;          /* Horizontal layout */
   gap: 20px;              /* Space between cards */
@@ -42,5 +33,15 @@ h2 {
 
 h3 {
   margin: 10px 0 5px 0;
+}
+
+.trip-card p strong + span {
+  color: gold;
+  font-size: 1.2em;
+}
+
+.stars {
+  color: gold;
+  font-size: 1.2em;
 }
 
