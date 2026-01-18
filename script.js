@@ -10,6 +10,22 @@ const trips = [
     purpose: "Vacation",
     rating: 5
   },
+    {
+    country: "Ireland",
+    city: "Dublin, Galway, Cork",
+    month: "February",
+    year: 2023,
+    purpose: "Vacation",
+    rating: 5
+  },
+    {
+    country: "Kenya",
+    city: "*",
+    month: "December",
+    year: 2022,
+    purpose: "Vacation",
+    rating: 5
+  },
   {
     country: "Italy",
     city: "Sardegna",
@@ -70,18 +86,32 @@ trips.sort(function(a, b) {
   return monthNumbers[b.month] - monthNumbers[a.month]; // newest month first
 });
 
+// Group trips by year
+const tripsByYear = {};
+
+trips.forEach(function(trip) {
+  if (!tripsByYear[trip.year]) {
+    tripsByYear[trip.year] = [];
+  }
+  tripsByYear[trip.year].push(trip);
+});
+
 //Show Trips
 const tripList = document.getElementById("trip-list");
-
 tripList.innerHTML = "";
 
-trips.forEach(function (trip) {
-  tripList.innerHTML += `
-    <div class="trip-card">
-      <h2>${trip.city}, ${trip.country}</h2>
-      <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
-      <p><strong>Purpose:</strong> ${trip.purpose}</p>
-      <p><strong>Rating:</strong> ${renderStars(trip.rating)}</p>
-    </div>
-  `;
-});
+for (let year in tripsByYear) {
+  tripList.innerHTML += `<h2>${year}</h2>`; // year heading
+
+  tripsByYear[year].forEach(function(trip) {
+    tripList.innerHTML += `
+      <div class="trip-card">
+        <h3>${trip.city}, ${trip.country}</h3>
+        <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
+        <p><strong>Purpose:</strong> ${trip.purpose}</p>
+        <p><strong>Rating:</strong> ${renderStars(trip.rating)}</p>
+      </div>
+    `;
+  });
+}
+
