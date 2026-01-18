@@ -9,6 +9,14 @@ const trip = {
   rating: 5
 };
 
+function renderStars(rating) {
+  let stars = "";
+  for (let i = 0; i < rating; i++) {
+    stars += "⭐";
+  }
+  return stars;
+}
+
 const tripList = document.getElementById("trip-list");
 
 tripList.innerHTML = `
