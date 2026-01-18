@@ -1,7 +1,7 @@
 const trip = {
-  country: "Tanzania",
-  city: "Zanzibar",
-  year: 2025,
+  country: "Portugal",
+  city: "Lisbon",
+  year: 2023,
   purpose: "Vacation",
   liked: true
 };
