@@ -100,18 +100,25 @@ trips.forEach(function(trip) {
 const tripList = document.getElementById("trip-list");
 tripList.innerHTML = "";
 
+// Loop over each year
 for (let year in tripsByYear) {
-  tripList.innerHTML += `<h2>${year}</h2>`; // year heading
+  // Add year heading
+  tripList.innerHTML += `<h2>${year}</h2>`;
 
+  // Start a row container for trips
+  tripList.innerHTML += `<div class="year-row" id="year-${year}"></div>`;
+
+  // Select the container we just created
+  const yearContainer = document.getElementById(`year-${year}`);
+
+  // Add each trip inside the row
   tripsByYear[year].forEach(function(trip) {
-    tripList.innerHTML += `
+    yearContainer.innerHTML += `
       <div class="trip-card">
         <h3>${trip.country}: ${trip.city}</h3>
         <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
         <p><strong>Purpose:</strong> ${trip.purpose}</p>
-        <p><strong>Rating:</strong> ${renderStars(trip.rating)}</p>
-      </div>
-    `;
-  });
-}
+        <p><strong>Rating:</strong>
+
+
 
