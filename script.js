@@ -1,3 +1,5 @@
+alert("script.js is connected");
+
 const trip = {
   country: "Portugal",
   city: "Lisbon",
