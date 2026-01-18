@@ -1,58 +1,23 @@
 // alert("script.js is connected");
 
-// Trips
+// Trips data
 const trips = [
-  {
-    country: "Tanzania",
-    city: "Zanzibar",
-    month: "October",
-    year: 2025,
-    purpose: "Vacation",
-    rating: 5
-  },
-  {
-    country: "Ireland",
-    city: "Dublin, Galway, Cork",
-    month: "February",
-    year: 2023,
-    purpose: "Vacation",
-    rating: 5
-  },
-  {
-    country: "Kenya",
-    city: "*",
-    month: "December",
-    year: 2022,
-    purpose: "Vacation",
-    rating: 5
-  },
-  {
-    country: "Italy",
-    city: "Sardegna",
-    month: "September",
-    year: 2025,
-    purpose: "Vacation",
-    rating: 4
-  },
-  {
-    country: "Luxembourg",
-    city: "Luxembourg",
-    month: "October",
-    year: 2025,
-    purpose: "Friends",
-    rating: 5
-  },
-  {
-    country: "Spain",
-    city: "Alicante, Granada, Malaga",
-    month: "July",
-    year: 2025,
-    purpose: "Vacation",
-    rating: 5
-  }
+  { country: "Tanzania", city: "Zanzibar", month: "October", year: 2025, purpose: "Vacation", rating: 5 },
+  { country: "Ireland", city: "Dublin, Galway, Cork", month: "February", year: 2023, purpose: "Vacation", rating: 5 },
+  { country: "Kenya", city: "*", month: "December", year: 2022, purpose: "Vacation", rating: 5 },
+  { country: "Italy", city: "Sardegna", month: "September", year: 2025, purpose: "Vacation", rating: 4 },
+  { country: "Luxembourg", city: "Luxembourg", month: "October", year: 2025, purpose: "Friends", rating: 5 },
+  { country: "Spain", city: "Alicante, Granada, Malaga", month: "July", year: 2025, purpose: "Vacation", rating: 5 }
 ];
 
-// Stars
+// Month mapping for sorting
+const monthNumbers = {
+  "January": 1, "February": 2, "March": 3, "April": 4,
+  "May": 5, "June": 6, "July": 7, "August": 8,
+  "September": 9, "October": 10, "November": 11, "December": 12
+};
+
+// Function to render stars
 function renderStars(rating) {
   let stars = "";
   for (let i = 0; i < rating; i++) {
@@ -61,65 +26,62 @@ function renderStars(rating) {
   return stars;
 }
 
-// Month mapping
-const monthNumbers = {
-  "January": 1, "February": 2, "March": 3, "April": 4,
-  "May": 5, "June": 6, "July": 7, "August": 8,
-  "September": 9, "October": 10, "November": 11, "December": 12
-};
-
-// Sort trips by year then month
-trips.sort(function(a, b) {
+// Sort trips: newest year first, then newest month first
+trips.sort((a, b) => {
   if (b.year !== a.year) return b.year - a.year;
   return monthNumbers[b.month] - monthNumbers[a.month];
 });
 
 // Group trips by year
 const tripsByYear = {};
-trips.forEach(function(trip) {
-  if (!tripsByYear[trip.year]) {
-    tripsByYear[trip.year] = [];
-  }
+trips.forEach(trip => {
+  if (!tripsByYear[trip.year]) tripsByYear[trip.year] = [];
   tripsByYear[trip.year].push(trip);
 });
 
-// Show trips
+// Display timeline
 const tripList = document.getElementById("trip-list");
 tripList.innerHTML = "";
 
 // Loop over each year
 for (let year in tripsByYear) {
-  // Add year heading
-  tripList.innerHTML += `<h2>${year}</h2>`;
+  // Year heading
+  const yearHeading = document.createElement("h2");
+  yearHeading.textContent = year;
+  tripList.appendChild(yearHeading);
 
-  // Start a row container for trips
-  tripList.innerHTML += `<div class="year-row" id="year-${year}"></div>`;
+  // Row container for this year's trips
+  const yearRow = document.createElement("div");
+  yearRow.className = "year-row";
+  tripList.appendChild(yearRow);
 
-  // Select the container we just created
-  const yearContainer = document.getElementById(`year-${year}`);
-
-  // Add each trip inside the row
-  tripsByYear[year].forEach(function(trip) {
-    yearContainer.innerHTML += `
-      <div class="trip-card">
-        <h3>${trip.country}: ${trip.city}</h3>
-        <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
-        <p><strong>Purpose:</strong> ${trip.purpose}</p>
-        <p><strong>Rating:</strong> <span class="stars">${renderStars(trip.rating)}</span></p>
-      </div>
+  // Add each trip as a card
+  tripsByYear[year].forEach(trip => {
+    const card = document.createElement("div");
+    card.className = "trip-card";
+    card.innerHTML = `
+      <h3>${trip.country}: ${trip.city}</h3>
+      <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
+      <p><strong>Purpose:</strong> ${trip.purpose}</p>
+      <p><strong>Rating:</strong> <span class="stars">${renderStars(trip.rating)}</span></p>
     `;
-  }); // close inner forEach
-} // close outer for loop
+    yearRow.appendChild(card);
+  });
+}
 
-// Initialize Leaflet map
-const map = L.map('map').setView([20, 0], 2); // center: somewhere in the world
+// --------------------
+// Leaflet Map Section
+// --------------------
 
-// Add a tile layer (the map visuals)
+// Initialize map
+const map = L.map('map').setView([20, 0], 2); // world view
+
+// Add OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Example coordinates for your trips
+// Manual coordinates for each country
 const countryCoords = {
   "Tanzania": [-6.3690, 34.8888],
   "Ireland": [53.1424, -7.6921],
@@ -129,7 +91,7 @@ const countryCoords = {
   "Spain": [40.4637, -3.7492]
 };
 
-// Add markers
+// Add markers for each visited country
 trips.forEach(trip => {
   const coords = countryCoords[trip.country];
   if (coords) {
@@ -139,6 +101,6 @@ trips.forEach(trip => {
       fillColor: 'red',
       fillOpacity: 0.7
     }).addTo(map)
-    .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>Rating: ${renderStars(trip.rating)}`);
+      .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>Rating: ${renderStars(trip.rating)}`);
   }
 });
