@@ -3,8 +3,8 @@
 const trip = {
   country: "Tanzania",
   city: "Zanzibar",
-  vsxmonth: "April",
-  year: 2023,
+  vsxmonth: "October",
+  year: 2025,
   purpose: "Vacation",
   rating: 5
 };
