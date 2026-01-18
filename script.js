@@ -118,7 +118,9 @@ for (let year in tripsByYear) {
         <h3>${trip.country}: ${trip.city}</h3>
         <p><strong>Period:</strong> ${trip.month} ${trip.year}</p>
         <p><strong>Purpose:</strong> ${trip.purpose}</p>
-        <p><strong>Rating:</strong>
+        <p><strong>Rating:</strong> <span class="stars">${renderStars(trip.rating)}</span></p>
+
+
 
 
 
