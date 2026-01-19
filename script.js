@@ -74,6 +74,7 @@ for (let year in tripsByYear) {
 // --------------------
 
 // Initialize map
+document.addEventListener("DOMContentLoaded", function() {
 const map = L.map('map').setView([20, 0], 2); // world view
 
 // Add OpenStreetMap tiles
@@ -104,3 +105,4 @@ trips.forEach(trip => {
       .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>Rating: ${renderStars(trip.rating)}`);
   }
 });
+});  
