@@ -92,18 +92,35 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // 4. Add markers
-    trips.forEach(trip => {
-        const coords = countryCoords[trip.country];
-        if (coords) {
-            L.circleMarker(coords, {
+   // Function to get coordinates and place marker
+async function addMarkerForCountry(trip) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(trip.country)}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length > 0) {
+            const lat = data[0].lat;
+            const lon = data[0].lon;
+
+            L.circleMarker([lat, lon], {
                 radius: 10,
                 color: '#2c3e50',
-                fillColor: '#e74c3c', // A nice red
+                fillColor: '#e74c3c',
                 fillOpacity: 0.8
             }).addTo(map)
-              .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}`);
+              .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>${renderStars(trip.rating)}`);
         }
-    });
+    } catch (error) {
+        console.error("Error fetching coordinates for:", trip.country, error);
+    }
+}
+
+// Loop through trips and fetch coordinates automatically
+trips.forEach(trip => {
+    addMarkerForCountry(trip);
+});
 
     // Helpful fix for rendering issues
     setTimeout(() => { map.invalidateSize(); }, 200);
