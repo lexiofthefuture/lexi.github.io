@@ -72,37 +72,39 @@ for (let year in tripsByYear) {
 // --------------------
 // Leaflet Map Section
 // --------------------
-
-// Initialize map
 document.addEventListener("DOMContentLoaded", function() {
-const map = L.map('map').setView([20, 0], 2); // world view
+    // 1. Initialize map
+    const map = L.map('map').setView([20, 0], 2); 
 
-// Add OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+    // 2. Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-// Manual coordinates for each country
-const countryCoords = {
-  "Tanzania": [-6.3690, 34.8888],
-  "Ireland": [53.1424, -7.6921],
-  "Kenya": [-1.2921, 36.8219],
-  "Italy": [41.8719, 12.5674],
-  "Luxembourg": [49.8153, 6.1296],
-  "Spain": [40.4637, -3.7492]
-};
+    // 3. Manual coordinates
+    const countryCoords = {
+        "Tanzania": [-6.3690, 34.8888],
+        "Ireland": [53.1424, -7.6921],
+        "Kenya": [-1.2921, 36.8219],
+        "Italy": [41.8719, 12.5674],
+        "Luxembourg": [49.8153, 6.1296],
+        "Spain": [40.4637, -3.7492]
+    };
 
-// Add markers for each visited country
-trips.forEach(trip => {
-  const coords = countryCoords[trip.country];
-  if (coords) {
-    L.circleMarker(coords, {
-      radius: 8,
-      color: 'red',
-      fillColor: 'red',
-      fillOpacity: 0.7
-    }).addTo(map)
-      .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>Rating: ${renderStars(trip.rating)}`);
-  }
+    // 4. Add markers
+    trips.forEach(trip => {
+        const coords = countryCoords[trip.country];
+        if (coords) {
+            L.circleMarker(coords, {
+                radius: 10,
+                color: '#2c3e50',
+                fillColor: '#e74c3c', // A nice red
+                fillOpacity: 0.8
+            }).addTo(map)
+              .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}`);
+        }
+    });
+
+    // Helpful fix for rendering issues
+    setTimeout(() => { map.invalidateSize(); }, 200);
 });
-});  
