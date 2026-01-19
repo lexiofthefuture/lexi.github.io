@@ -72,56 +72,48 @@ for (let year in tripsByYear) {
 // --------------------
 // Leaflet Map Section
 // --------------------
+
 document.addEventListener("DOMContentLoaded", function() {
     // 1. Initialize map
-    const map = L.map('map').setView([20, 0], 2); 
+    const map = L.map('map').setView([20, 0], 2);
 
-    // 2. Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 3. Manual coordinates
-    const countryCoords = {
-        "Tanzania": [-6.3690, 34.8888],
-        "Ireland": [53.1424, -7.6921],
-        "Kenya": [-1.2921, 36.8219],
-        "Italy": [41.8719, 12.5674],
-        "Luxembourg": [49.8153, 6.1296],
-        "Spain": [40.4637, -3.7492]
-    };
+    // 2. Define your custom emoji icon
+    const travelIcon = L.divIcon({
+        html: '<span style="font-size: 24px;">📍</span>',
+        className: 'custom-div-icon', 
+        iconSize: [30, 30],
+        iconAnchor: [15, 30] 
+    });
 
-    // 4. Add markers
-   // Function to get coordinates and place marker
-async function addMarkerForCountry(trip) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(trip.country)}`;
+    // 3. Function to fetch coordinates and draw the pin
+    async function addMarker(trip) {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(trip.country)}`;
+        
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+            if (data.length > 0) {
+                const lat = data[0].lat;
+                const lon = data[0].lon;
 
-        if (data.length > 0) {
-            const lat = data[0].lat;
-            const lon = data[0].lon;
-
-            L.circleMarker([lat, lon], {
-                radius: 10,
-                color: '#2c3e50',
-                fillColor: '#e74c3c',
-                fillOpacity: 0.8
-            }).addTo(map)
-              .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>${renderStars(trip.rating)}`);
+                // Use the travelIcon here for all trips
+                L.marker([lat, lon], { icon: travelIcon })
+                  .addTo(map)
+                  .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>${renderStars(trip.rating)}`);
+            }
+        } catch (error) {
+            console.error("Geocoding failed for:", trip.country);
         }
-    } catch (error) {
-        console.error("Error fetching coordinates for:", trip.country, error);
     }
-}
 
-// Loop through trips and fetch coordinates automatically
-trips.forEach(trip => {
-    addMarkerForCountry(trip);
-});
+    // 4. Run for every trip
+    trips.forEach(trip => addMarker(trip));
 
-    // Helpful fix for rendering issues
+    // Final layout fix
     setTimeout(() => { map.invalidateSize(); }, 200);
 });
