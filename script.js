@@ -69,19 +69,19 @@ for (let year in tripsByYear) {
   });
 }
 
+// ... (Keep your trips array and sorting code at the top as is) ...
+
 // --------------------
 // Leaflet Map Section
 // --------------------
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. Initialize map
     const map = L.map('map').setView([20, 0], 2);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 2. Define your custom emoji icon
     const travelIcon = L.divIcon({
         html: '<span style="font-size: 24px;">📍</span>',
         className: 'custom-div-icon', 
@@ -89,31 +89,35 @@ document.addEventListener("DOMContentLoaded", function() {
         iconAnchor: [15, 30] 
     });
 
-    // 3. Function to fetch coordinates and draw the pin
-    async function addMarker(trip) {
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(trip.country)}`;
-        
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
+    async function addMarkersInOrder() {
+        // Since 'trips' is already sorted (newest first), 
+        // we loop through them in that exact order.
+        for (const trip of trips) {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(trip.country)}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
 
-            if (data.length > 0) {
-                const lat = data[0].lat;
-                const lon = data[0].lon;
+                if (data.length > 0) {
+                    const lat = data[0].lat;
+                    const lon = data[0].lon;
 
-                // Use the travelIcon here for all trips
-                L.marker([lat, lon], { icon: travelIcon })
-                  .addTo(map)
-                  .bindPopup(`<strong>${trip.country}</strong><br>${trip.city}<br>${renderStars(trip.rating)}`);
+                    L.marker([lat, lon], { icon: travelIcon })
+                      .addTo(map)
+                      .bindPopup(`
+                        <strong>${trip.country}</strong><br>
+                        ${trip.city}<br>
+                        <small>${trip.month} ${trip.year}</small>
+                      `);
+                }
+            } catch (error) {
+                console.error("Error finding:", trip.country);
             }
-        } catch (error) {
-            console.error("Geocoding failed for:", trip.country);
         }
     }
 
-    // 4. Run for every trip
-    trips.forEach(trip => addMarker(trip));
-
-    // Final layout fix
+    addMarkersInOrder();
+    
     setTimeout(() => { map.invalidateSize(); }, 200);
 });
