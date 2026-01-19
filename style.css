@@ -52,4 +52,10 @@ h3 {
   border-radius: 10px;
 }
 
-
+.custom-div-icon {
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
